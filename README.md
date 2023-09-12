@@ -17,10 +17,11 @@ In this tutorial, we’ll walk you through creating a children’s storytelling 
 Next.js allows for easy server-side rendering, which is useful when you’re making API calls and handling dynamic content like we are in this project.
 
 #### Commands
-
+```bash
 npx create-next-app@latest <name-of-your-application>  
 cd <name-of-your-application>  
 npm run dev
+```
 
 ### Step 2: Text Generation with OpenAI API
 
@@ -31,11 +32,12 @@ OpenAI offers one of the most powerful language models, which we’ll use to gen
 #### Commands
 
 Create a folder and a new file:
-
+```bash
 mkdir -p src/app/api/openai && touch src/app/api/openai/route.js
+```
 
 #### Code Snippet in `route.js`
-
+```javascript
 import { NextResponse } from "next/server";  
 export async function POST(req) {  
 const OpenAI = require("openai");  
@@ -62,6 +64,7 @@ return NextResponse.json({
 story: response.choices[0]?.message?.content?.trim() || "",  
 });  
 }
+```
 
 ### Step 3: Image Generation with [Stability.ai](http://stability.ai/) API
 
@@ -70,11 +73,12 @@ story: response.choices[0]?.message?.content?.trim() || "",
 [Stability.ai](http://stability.ai/) offers an image generation API that we will use to create visuals based on the story.
 
 #### Commands
-
+```bash
 mkdir -p src/app/api/stability && touch src/app/api/stability/route.js
+```
 
 #### Code Snippet in `route.js`
-
+```javascript
 import { NextResponse } from "next/server";  
 export async function POST(req) {  
 const body = await req.json();  
@@ -119,6 +123,7 @@ const prompts =
 response.choices[0]?.message?.content?.trim().split("|") || "";  
 return prompts;  
 }
+```
 
 ### Step 4: Audio Generation with ElevenLabs API
 
@@ -127,11 +132,12 @@ return prompts;
 ElevenLabs provides an API to convert text to speech. We’ll use this API to make our story even more engaging with an audio narration.
 
 #### Commands
-
+```sh
 mkdir -p src/app/api/elevenlabs && touch src/app/api/elevenlabs/route.js
+```
 
 #### Code Snippet in `route.js`
-
+```javascript
 import { config } from "dotenv";  
 config();  
 export async function POST(request, res) {  
@@ -173,6 +179,7 @@ return new Response(buffer);
 return new Response(JSON.stringify({ error: error.message }));  
 }  
 }
+```
 
 ### Step 5: Create the Frontend Page
 
@@ -181,7 +188,7 @@ return new Response(JSON.stringify({ error: error.message }));
 We are using a single page to keep things simple. The page will display the form, story, images, and audio player.
 
 #### Create a single frontend page `src/app/page.js`
-
+```jsx
 "use client";  
 import Image from "next/image";  
 import { useEffect, useRef, useState } from "react";
@@ -318,6 +325,7 @@ Generate New Story
 </div>  
 );  
 }
+```
 
 ### Conclusion
 
